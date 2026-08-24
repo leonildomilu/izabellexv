@@ -1,0 +1,12 @@
+# Node
+node_modules/
+*.log
+
+# Windows
+Thumbs.db
+desktop.ini
+
+# IDE
+.vscode/
+.idea/
+.DS_Store
