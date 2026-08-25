@@ -1,6 +1,6 @@
 # Izabelle XV — Pool Party 🌅
 
-Convite digital / landing page da festa de 15 anos da **Izabelle**.
+Convite Individual / landing page da festa de 15 anos da **Izabelle**.
 
 - 📅 **Sábado, 28 de Novembro de 2026**
 - 🕒 **15h**
