@@ -80,6 +80,12 @@
   footer{text-align:center;color:rgba(255,255,255,.85);padding:34px 20px 44px;font-size:.85rem;letter-spacing:.14em}
   footer .name{font-family:'Great Vibes',cursive;font-size:2rem;color:var(--gold-light);display:block;margin-bottom:8px}
 
+  .fab-music{position:fixed;right:18px;bottom:18px;z-index:99;display:flex;align-items:center;justify-content:center;width:54px;height:54px;border-radius:50%;border:none;cursor:pointer;background:linear-gradient(135deg,var(--pink-deep),var(--coral));color:#fff;font-size:1.35rem;box-shadow:0 8px 20px rgba(233,30,122,.45);transition:transform .15s ease,box-shadow .15s ease}
+  .fab-music:hover{transform:scale(1.08)}
+  .fab-music .ico{line-height:1}
+  .fab-music.playing{animation:fab-pulse 1.6s ease-in-out infinite}
+  @keyframes fab-pulse{0%,100%{box-shadow:0 8px 20px rgba(233,30,122,.45)}50%{box-shadow:0 8px 26px rgba(233,30,122,.75),0 0 0 8px rgba(255,79,154,.18)}}
+
   @media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto} }
 </style>
 </head>
@@ -199,6 +205,32 @@
     document.getElementById('cd-s').textContent = String(s).padStart(2,'0');
   }
   tick(); setInterval(tick, 1000);
+  // === Player de musica ===
+  const music = document.getElementById('music');
+  const fab = document.getElementById('music-fab');
+  let userPaused = false;
+  function updateFab(){
+    fab.classList.toggle('playing', !music.paused);
+    fab.querySelector('.ico').textContent = music.paused ? '\u{1F3B5}' : '\u23F8';
+    fab.setAttribute('aria-label', music.paused ? 'Tocar m\u00fasica' : 'Pausar m\u00fasica');
+  }
+  function tryStart(){
+    if (userPaused || music.paused === false) return;
+    music.play().then(function(){}).catch(function(){});
+  }
+  music.addEventListener('play', updateFab);
+  music.addEventListener('pause', updateFab);
+  music.addEventListener('loadeddata', function(){ fab.classList.add('ready'); });
+  music.addEventListener('canplaythrough', function(){ fab.classList.add('ready'); });
+  fab.addEventListener('click', function(){
+    if (music.paused) { userPaused = false; tryStart(); }
+    else { userPaused = true; music.pause(); }
+  });
+  // autoplay ao abrir + fallback: primeira interacao do usuario
+  music.play().then(function(){}).catch(function(){});
+  ['pointerdown','keydown','touchend','scroll'].forEach(function(evt){
+    window.addEventListener(evt, tryStart, { once: true, passive: true });
+  });
   function togglePix(){ document.getElementById('pix-panel').classList.toggle('open'); }
   function copyPix(){
     const txt = document.getElementById('pix-code').textContent.trim();
@@ -214,6 +246,9 @@
     else { fallback(); }
   }
 </script>
+
+<audio id="music" src="music.mp3" loop preload="none"></audio>
+<button class="fab-music" id="music-fab" type="button" aria-label="Tocar m&uacute;sica"><span class="ico">🎵</span></button>
 
 </body>
 </html>
