@@ -190,6 +190,9 @@
   15 ANOS · POOL PARTY
 </footer>
 
+<audio id="music" src="music.mp3" loop preload="none"></audio>
+<button class="fab-music" id="music-fab" type="button" aria-label="Tocar m&uacute;sica"><span class="ico">🎵</span></button>
+
 <script>
   const target = new Date(2026, 10, 28, 15, 0, 0).getTime();
   function tick(){
@@ -223,7 +226,7 @@
   music.addEventListener('loadeddata', function(){ fab.classList.add('ready'); });
   music.addEventListener('canplaythrough', function(){ fab.classList.add('ready'); });
   fab.addEventListener('click', function(){
-    if (music.paused) { userPaused = false; tryStart(); }
+    if (userPaused) { userPaused = false; tryStart(); }
     else { userPaused = true; music.pause(); }
   });
   // autoplay ao abrir + fallback: primeira interacao do usuario
@@ -246,9 +249,6 @@
     else { fallback(); }
   }
 </script>
-
-<audio id="music" src="music.mp3" loop preload="none"></audio>
-<button class="fab-music" id="music-fab" type="button" aria-label="Tocar m&uacute;sica"><span class="ico">🎵</span></button>
 
 </body>
 </html>
