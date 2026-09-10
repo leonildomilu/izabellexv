@@ -85,6 +85,13 @@
   .fab-music .ico{line-height:1}
   .fab-music.playing{animation:fab-pulse 1.6s ease-in-out infinite}
   @keyframes fab-pulse{0%,100%{box-shadow:0 8px 20px rgba(233,30,122,.45)}50%{box-shadow:0 8px 26px rgba(233,30,122,.75),0 0 0 8px rgba(255,79,154,.18)}}
+  .enter-gate{position:fixed;inset:0;z-index:1000;display:flex;align-items:center;justify-content:center;text-align:center;cursor:pointer;padding:24px;background:linear-gradient(160deg,#3a0d26,var(--pink-deep) 55%,var(--coral));color:#fff;opacity:0;transition:opacity .5s ease}
+  .enter-gate.show{opacity:1}
+  .enter-gate[hidden]{display:none}
+  .eg-script{font-family:'Great Vibes',cursive;font-size:3.4rem;color:var(--gold-light);line-height:1.1}
+  .eg-sub{letter-spacing:.22em;font-size:.95rem;margin:10px 0 34px;color:rgba(255,255,255,.9)}
+  .eg-btn{display:inline-block;background:#fff;color:var(--pink-deep);font-weight:700;font-size:1.05rem;padding:14px 34px;border-radius:999px;border:none;box-shadow:0 10px 30px rgba(0,0,0,.3);animation:eg-pulse 1.8s ease-in-out infinite}
+  @keyframes eg-pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
 
   @media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto} }
 </style>
@@ -192,6 +199,13 @@
 
 <audio id="music" src="music.mp3" loop preload="none"></audio>
 <button class="fab-music" id="music-fab" type="button" aria-label="Tocar m&uacute;sica"><span class="ico">🎵</span></button>
+<div class="enter-gate" id="enter-gate" hidden>
+  <div class="eg-card">
+    <div class="eg-script">Izabelle XV</div>
+    <div class="eg-sub">POOL PARTY · 28.11.2026 · 15H</div>
+    <button class="eg-btn" id="enter-btn" type="button">Toque para entrar <span>🎶</span></button>
+  </div>
+</div>
 
 <script>
   const target = new Date(2026, 10, 28, 15, 0, 0).getTime();
@@ -234,9 +248,25 @@
     if (userPaused) { userPaused = false; tryStart(); }
     else { userPaused = true; music.pause(); }
   });
-  // autoplay ao abrir + fallback: retry persistente enquanto o browser bloquear
+  // overlay "toque para entrar": aparece so quando o browser bloqueia o autoplay (celulares)
+  var gate = document.getElementById('enter-gate');
+  var gateShown = false;
+  function showGate(){
+    if (gateShown) return; gateShown = true;
+    gate.hidden = false;
+    requestAnimationFrame(function(){ requestAnimationFrame(function(){ gate.classList.add('show'); }); });
+  }
+  function hideGate(){
+    if (!gateShown) return; gateShown = false;
+    gate.classList.remove('show');
+    setTimeout(function(){ gate.hidden = true; }, 550);
+  }
+  gate.addEventListener('click', function(){ tryStart(); });
+  music.addEventListener('play', hideGate);
+  // autoplay ao abrir + fallback: retry persistente + overlay se o browser bloquear
   var retryTimer = null;
   music.play().then(disarm, function(){
+    showGate();
     retryTimer = setInterval(function(){
       if (userPaused) { clearInterval(retryTimer); retryTimer = null; return; }
       tryStart();
