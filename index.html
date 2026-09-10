@@ -80,7 +80,7 @@
   footer{text-align:center;color:rgba(255,255,255,.85);padding:34px 20px 44px;font-size:.85rem;letter-spacing:.14em}
   footer .name{font-family:'Great Vibes',cursive;font-size:2rem;color:var(--gold-light);display:block;margin-bottom:8px}
 
-  .fab-music{position:fixed;right:18px;bottom:18px;z-index:99;display:flex;align-items:center;justify-content:center;width:54px;height:54px;border-radius:50%;border:none;cursor:pointer;background:linear-gradient(135deg,var(--pink-deep),var(--coral));color:#fff;font-size:1.35rem;box-shadow:0 8px 20px rgba(233,30,122,.45);transition:transform .15s ease,box-shadow .15s ease}
+  .fab-music{position:fixed;right:18px;bottom:84px;z-index:99;display:flex;align-items:center;justify-content:center;width:54px;height:54px;border-radius:50%;border:none;cursor:pointer;background:linear-gradient(135deg,var(--pink-deep),var(--coral));color:#fff;font-size:1.35rem;box-shadow:0 8px 20px rgba(233,30,122,.45);transition:transform .15s ease,box-shadow .15s ease}
   .fab-music:hover{transform:scale(1.08)}
   .fab-music .ico{line-height:1}
   .fab-music.playing{animation:fab-pulse 1.6s ease-in-out infinite}
@@ -218,8 +218,13 @@
     fab.setAttribute('aria-label', music.paused ? 'Tocar m\u00fasica' : 'Pausar m\u00fasica');
   }
   function tryStart(){
-    if (userPaused || music.paused === false) return;
-    music.play().then(function(){}).catch(function(){});
+    if (userPaused || !music.paused) return;
+    var p = music.play();
+    if (p && p.then) p.then(function(){ disarm(); }, function(){});
+  }
+  function onInteract(){ tryStart(); }
+  function disarm(){
+    ['pointerdown','keydown','touchend','scroll'].forEach(function(evt){ window.removeEventListener(evt, onInteract); });
   }
   music.addEventListener('play', updateFab);
   music.addEventListener('pause', updateFab);
@@ -229,10 +234,16 @@
     if (userPaused) { userPaused = false; tryStart(); }
     else { userPaused = true; music.pause(); }
   });
-  // autoplay ao abrir + fallback: primeira interacao do usuario
-  music.play().then(function(){}).catch(function(){});
+  // autoplay ao abrir + fallback: retry persistente enquanto o browser bloquear
+  var retryTimer = null;
+  music.play().then(disarm, function(){
+    retryTimer = setInterval(function(){
+      if (userPaused) { clearInterval(retryTimer); retryTimer = null; return; }
+      tryStart();
+    }, 2500);
+  });
   ['pointerdown','keydown','touchend','scroll'].forEach(function(evt){
-    window.addEventListener(evt, tryStart, { once: true, passive: true });
+    window.addEventListener(evt, onInteract, { passive: true });
   });
   function togglePix(){ document.getElementById('pix-panel').classList.toggle('open'); }
   function copyPix(){
