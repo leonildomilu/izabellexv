@@ -47,8 +47,8 @@
   .cd-box .n{font-family:'Bungee',cursive;font-size:1.9rem;line-height:1}
   .cd-box .u{font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;margin-top:6px;opacity:.9}
 
-  .qrs{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:18px}
-  .qrbox{text-align:center;padding:26px 20px;background:linear-gradient(160deg,#fff7ec,#ffe4f1);border:1.5px dashed var(--gold);border-radius:16px}
+  .qrs{display:flex;justify-content:center;gap:18px}
+  .qrbox{text-align:center;padding:26px 20px;max-width:340px;width:100%;background:linear-gradient(160deg,#fff7ec,#ffe4f1);border:1.5px dashed var(--gold);border-radius:16px}
   .qrbox img{width:170px;height:170px;border-radius:10px;image-rendering:pixelated}
   .qrbox .cap{margin-top:14px;font-size:.95rem}
   .qrbox .hint{font-size:.72rem;color:var(--muted);margin-top:6px;letter-spacing:.05em}
@@ -136,12 +136,6 @@
         <div class="cap">📍 Localização</div>
         <div class="hint">Escaneie para abrir o mapa</div>
         <a class="btn" href="https://maps.app.goo.gl/2FKikXAefxHnfucs9" target="_blank" rel="noopener">Abrir no Maps</a>
-      </div>
-      <div class="qrbox">
-        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAcIAAAHCAQAAAABUY/ToAAAEg0lEQVR4nO1dW2rrOhRd2gn004EzgA7FmcEZUjlDujOIh9IBHIg/Cw467Ickt5fiRG5JI+/1YfxaYMcL7aeUEFGHgSqJgDOXQIt3fAZnLoEW7/gMzvzWX2gMhuO4RzjiEjDI8eGiGwy8AV817P2rXAHaEHMXBUA3ARifYng5A/E0PkX0r3ugP7Pxep6AXu48P+Z71oEqedgMcy/bAOxYP4Y4PLOb1P0NEYgI6P7yhi+NB6D/715PS878sRoyjL+mCEwI/WtgDUHksxczhv6Ed/DvuQTaoobAbg92UxyeJ76wixh+80g0/powHM53f1py5o/9hWKMYsp2EX18C+IARR53wst59y7672KUC/49l0EbYl402LIz7FMfxbFmd1qisaOoiQ8tYLvn09aBKnlw5iL2PLSkg1FsWd50b+xTT8BwgO7NhyT/KkugjTAR45lj+2SyJHCPp25SWxb1arTDGeP0WO9JzvxODUVODXGSiJUjSSI9p05RZ1clNWQM19BVoI0woflFkY+opOcxx8YmqBNtGtKwzAYtH4daUwKt1VAsytEIzawaLIsttsyE5BpqUgm0ehxCCuGtmpHrHzCDZjLLV90fakwJVM2EutN9Ml5p9BHstIZmChNzJ/IR5+mx3pOc+a3j0GSuc59tmXpGKUJLfnbacw1dB9oIE2aZ1FfOh1k0fTFo2TNyW9aiEmgV8xLCsZs0HS29QtJJhOEgPtIlzGyZnbvn09aBKnlw5jJicZPFFepLDKZGTiyY+dQpynd/6BrQtpiD9izKIGOFV+1BA49I3OoohbR46t7CI79nBaiGtCkmLCc9yyyKe2RRPkxSNgRplK+bx3pPcua318uiBV0WwmtrbNRNyljn/JBklPyrLIE2wsS7mD3VXEtwdsplDvaC3B9qVwlUzYQV6nlXTVZRTi6k5XpZygG4T92eEmh9XIb5nuaHUr0s3ZrzQ27LGlQCrWGOHHlpfuhdpkjQq7iypCRWu+fTVoJqiXDm1TVXJFco1e3ntqyz0of7Q7eAtlVzRQ7hLbNYRINs2kpt1v2h9pRA1UyYNrK10vArhWmQw9J+prGa54caVAKtHoe6eSGjNBFB9z663T4OtacEWl+3x/97p1NOupxLjfmuofaUQNVMlP57M1mqnOQUMWYl2NIf63nqxpRA6zW0m7dNm2mDNS6WVHZuknUNtaYEqmbiQ0T/oTaG2bnCcA01qARaw+zS/DIeZEJ45kOZIT3uU//QbC4jeCErX8OqSSV8xTpoYOMls+y1ZP+m50RXMss+HMtMs4d7z0pQLRFbYWI2D6hMC9Ku++wA5UzRLMB3n7oxJdDX5KnPRSq5T1+QS/tWgvW4rD0l0Ncwuwnxj5gsNmMv0aqv1iSrQb+tTvQDnvYm0G23z+DMW+tl0QoeuRe2m/fk66jkeerrQJtixjJpY5C4TKwVTwuKr9KYLysPP8W01PB9n7YGVMViOPOmddBGCc5k+So2Y2kJNK2E/DnwTDPpH5KxyX/bJdBGmMH/a6Gp70nOXAAt3fApnLmE+l/oH6G/9Oy1nS8BAAAAAElFTkSuQmCC" alt="QR Code do formulário de presença">
-        <div class="cap">🎟️ Confirmar presença</div>
-        <div class="hint">Escaneie para preencher o RSVP</div>
-        <a class="btn" href="https://docs.google.com/forms/d/e/1FAIpQLSfT3hPHlQBNC972SNk27s0W1V47JVmrtBB1zNajidpvawBf_Q/viewform" target="_blank" rel="noopener">Responder agora</a>
       </div>
     </div>
   </section>
